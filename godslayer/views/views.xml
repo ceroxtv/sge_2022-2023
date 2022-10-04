@@ -1,0 +1,68 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="godslayer.list">
+      <field name="name">godslayer list</field>
+      <field name="model">godslayer.godslayer</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="godslayer.action_player_window">
+      <field name="name">godslayer players window</field>
+      <field name="res_model">godslayer.player</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="godslayer.action_mundo_window">
+      <field name="name">godslayer mundo window</field>
+      <field name="res_model">godslayer.mundo</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="godslayer.action_aldea_window">
+      <field name="name">godslayer aldeas window</field>
+      <field name="res_model">godslayer.aldea</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="godslayer.action_server">
+      <field name="name">godslayer server</field>
+      <field name="model_id" ref="model_godslayer_godslayer"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+
+    <menuitem name="godslayer" id="godslayer.menu_root"/>
+    <!-- menu categories -->
+    <menuitem name="Menu 1" id="godslayer.menu_game" parent="godslayer.menu_root"/>
+    <!-- actions -->
+    <menuitem name="Players" id="godslayer.menu_player_list" parent="godslayer.menu_game"
+              action="godslayer.action_player_window"/>
+    <menuitem name="Mundo" id="godslayer.menu_mundo_list" parent="godslayer.menu_game"
+              action="godslayer.action_mundo_window"/>
+    <menuitem name="Aldea" id="godslayer.menu_aldea_list" parent="godslayer.menu_game"
+              action="godslayer.action_aldea_window"/>
+  </data>
+</odoo>

@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_godslayer_player,godslayer.player,model_godslayer_player,base.group_user,1,1,1,1
+access_godslayer_mundo,godslayer.mundo,model_godslayer_mundo,base.group_user,1,1,1,1
+access_godslayer_aldea,godslayer.aldea,model_godslayer_aldea,base.group_user,1,1,1,1
