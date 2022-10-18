@@ -11,6 +11,7 @@ class mundo(models.Model):
     size = fields.Float()
 
     aldea = fields.One2many('godslayer.aldea','mundo')
+    aldea_qty = fields.Integer(compute="get_aldeas_qty")
 
     @api.constrains('size')
     def check_mundo_size(self):
@@ -18,12 +19,18 @@ class mundo(models.Model):
             if mundo.size > 1000 or mundo.size <1:
                 raise ValidationError("Mundo demasiado grande: %s" %mundo.size)
 
+    @api.depends('aldea')
+    def get_aldeas_qty(self):
+        for p in self:
+            p.aldea_qty = len(p.aldea)
+
 class aldea(models.Model):
     _name = 'godslayer.aldea'
     _description = 'aldea'
 
     name = fields.Char(String="Nombre", required = True)
     avatar = fields.Image(max_width=200, max_height=200)
+    password = fields.Char(String="Contrsenya")
 
     mundo = fields.Many2one('godslayer.mundo')
     religion = fields.Many2one('godslayer.religion')
@@ -52,6 +59,12 @@ class templo(models.Model):
     aldea = fields.Many2one('godslayer.aldea')
     dioses = fields.Many2one('godslayer.dioses')
     #religion = fields.Many2one('godslayer.religion')
+    dioses_qty = fields.Integer(compute="get_dioses_qty")
+
+    @api.depends('dioses')
+    def get_dioses_qty(self):
+        for p in self:
+            p.dioses_qty = len(p.dioses)
 
 class edificio(models.Model):
     _name = 'godslayer.edificio'
@@ -60,32 +73,28 @@ class edificio(models.Model):
     name = fields.Char(String="Nombre", required=True)
 
     aldea = fields.Many2one('godslayer.aldea')
-    soldados = fields.One2many('godslayer.soldado','edificio')
 
 class dioses(models.Model):
     _name = 'godslayer.dioses'
     _description = 'dioses'
 
     name = fields.Char(String="Nombre", required=True)
+    imagen = fields.Image(max_width=200, max_height=200)
     health = fields.Integer()
     atack = fields.Integer()
     defense = fields.Integer()
     speed = fields.Integer()
     power = fields.Integer()
+    total = fields.Integer(compute = "get_dioses_stats")
 
     templo = fields.One2many('godslayer.templo','dioses')
     religion  =fields.Many2one('godslayer.religion')
 
-class soldado(models.Model):
-    _name = 'godslayer.soldado'
-    _description = 'soldados'
+    @api.depends('health','atack','defense','speed','power')
+    def get_dioses_stats(self):
+        for p in self:
+            p.total = p.atack+p.health+p.defense+p.speed+p.power
 
-    name = fields.Char(String="Nombre", required=True)
-    health = fields.Integer()
-    atack = fields.Integer()
-    defense = fields.Integer()
-    speed = fields.Integer()
-    edificio = fields.Many2one('godslayer.edificio')
 
 
 

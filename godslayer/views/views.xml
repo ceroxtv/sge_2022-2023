@@ -1,19 +1,118 @@
 <odoo>
   <data>
-    <!-- explicit list view definition -->
-<!--
-    <record model="ir.ui.view" id="godslayer.list">
-      <field name="name">godslayer list</field>
-      <field name="model">godslayer.godslayer</field>
+    <!--MUNDO -->
+
+    <record model="ir.ui.view" id="godslayer.mundo_tree">
+      <field name="name">godslayer mundo</field>
+      <field name="model">godslayer.mundo</field>
       <field name="arch" type="xml">
         <tree>
           <field name="name"/>
-          <field name="value"/>
-          <field name="value2"/>
+          <field name="aldea"/>
         </tree>
       </field>
     </record>
--->
+
+    <record model="ir.ui.view" id="godslayer.mundo_form">
+      <field name="name">godslayer mundo</field>
+      <field name="model">godslayer.mundo</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <group>
+                <field name="image" widget="image"/>
+              </group>
+              <group string="Basic stats">
+                 <field name="name"/>
+                 <field name="size"/>
+              </group>
+            </group>
+
+            <group>
+              <field name="aldea"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+
+    <!--ALDEA -->
+    <record model="ir.ui.view" id="godslayer.aldea_tree">
+      <field name="name">godslayer aldea</field>
+      <field name="model">godslayer.aldea</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <field name="avatar" widget="image"/>
+              <field name="name"/>
+              <field name="password" password="True"/>
+              <field name="creation_date"/>
+              <field name="mundo"/>
+            </group>
+            <notebook>
+              <page string="Religion">
+                <group>
+                  <field name="religion"/>
+                </group>
+              </page>
+
+              <page string="Templo">
+                <group>
+                  <field name="templos"/>
+                </group>
+              </page>
+
+              <page string="Edificios">
+                <group>
+                  <field name="edificio"/>
+                </group>
+              </page>
+            </notebook>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="godslayer.templo_tree">
+      <field name="name">godslayer templo</field>
+      <field name="model">godslayer.templo</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="dioses_qty"/>
+          <field name="dioses"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="godslayer.dioses_tree">
+      <field name="name">godslayer dios</field>
+      <field name="model">godslayer.dioses</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <group>
+                <field name="name"/>
+                <field name="imagen" widget="image"/>
+              </group>
+
+              <group>
+                <field name="health"/>
+                <field name="atack"/>
+                <field name="defense"/>
+                <field name="speed"/>
+                <field name="power"/>
+                <field name="total"/>
+              </group>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
 
     <!-- actions opening views on models -->
 
@@ -41,6 +140,7 @@
       <field name="view_mode">tree,form</field>
     </record>
 
+
     <record model="ir.actions.act_window" id="godslayer.action_edificio_window">
       <field name="name">godslayer edificio window</field>
       <field name="res_model">godslayer.edificio</field>
@@ -52,29 +152,21 @@
       <field name="res_model">godslayer.dioses</field>
       <field name="view_mode">tree,form</field>
     </record>
-
-    <record model="ir.actions.act_window" id="godslayer.action_soldado_window">
-      <field name="name">godslayer soldado window</field>
-      <field name="res_model">godslayer.soldado</field>
-      <field name="view_mode">tree,form</field>
-    </record>
-
-
     <!-- server action to the one above -->
-<!--
-    <record model="ir.actions.server" id="godslayer.action_server">
-      <field name="name">godslayer server</field>
-      <field name="model_id" ref="model_godslayer_godslayer"/>
-      <field name="state">code</field>
-      <field name="code">
-        action = {
-          "type": "ir.actions.act_window",
-          "view_mode": "tree,form",
-          "res_model": model._name,
-        }
-      </field>
-    </record>
--->
+    <!--
+        <record model="ir.actions.server" id="godslayer.action_server">
+          <field name="name">godslayer server</field>
+          <field name="model_id" ref="model_godslayer_godslayer"/>
+          <field name="state">code</field>
+          <field name="code">
+            action = {
+              "type": "ir.actions.act_window",
+              "view_mode": "tree,form",
+              "res_model": model._name,
+            }
+          </field>
+        </record>
+    -->
 
     <!-- Top menu item -->
 
@@ -99,8 +191,5 @@
 
     <menuitem name="Dioses" id="godslayer.menu_dioses_list" parent="godslayer.menu_game"
               action="godslayer.action_dioses_window"/>
-
-    <menuitem name="Soldado" id="godslayer.menu_soldado_list" parent="godslayer.menu_game"
-              action="godslayer.action_soldado_window"/>
   </data>
 </odoo>

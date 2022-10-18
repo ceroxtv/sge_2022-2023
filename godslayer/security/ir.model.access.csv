@@ -5,4 +5,3 @@ access_godslayer_religion,godslayer.religion,model_godslayer_religion,base.group
 access_godslayer_templo,godslayer.templo,model_godslayer_templo,base.group_user,1,1,1,1
 access_godslayer_edificio,godslayer.edificio,model_godslayer_edificio,base.group_user,1,1,1,1
 access_godslayer_dioses,godslayer.dioses,model_godslayer_dioses,base.group_user,1,1,1,1
-access_godslayer_soldado,godslayer.soldado,model_godslayer_soldado,base.group_user,1,1,1,1
