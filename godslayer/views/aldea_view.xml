@@ -1,0 +1,51 @@
+<odoo>
+    <data>
+        <!--ALDEA -->
+        <record model="ir.ui.view" id="godslayer.aldea_tree">
+            <field name="name">godslayer aldea</field>
+            <field name="model">godslayer.aldea</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="avatar" widget="image"/>
+                            <field name="name"/>
+                            <field name="password" password="True"/>
+                            <field name="creation_date"/>
+                            <field name="mundo"/>
+                        </group>
+                        <notebook>
+
+                            <page string = "Recursos">
+                                <group>
+                                    <field name = "oro" />
+                                    <field name = "fe" />
+                                    <field name = "materiales"/>
+                                </group>
+                            </page>
+
+                            <page string="Religion">
+                                <group>
+                                    <field name="religion"/>
+                                </group>
+                            </page>
+
+                            <page string="Templo">
+                                <group>
+                                    <field name="templos"/>
+                                </group>
+                            </page>
+
+                            <page string="Edificios">
+                                <group>
+                                    <field name="edificio"/>
+                                </group>
+                            </page>
+
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

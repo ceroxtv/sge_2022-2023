@@ -25,6 +25,11 @@
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        'views/mundo_view.xml',
+        'views/aldea_view.xml',
+        'views/templo_view.xml',
+        'views/dioses_view.xml',
+        'views/edificio_view.xml',
         'views/views.xml',
         'views/templates.xml',
     ],

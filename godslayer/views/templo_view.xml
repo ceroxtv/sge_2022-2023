@@ -1,0 +1,38 @@
+<odoo>
+    <data>
+        <!-- TEMPLO -->
+        <record model="ir.ui.view" id="godslayer.templo_tree">
+            <field name="name">godslayer templo</field>
+            <field name="model">godslayer.templo</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="dioses_qty"/>
+                    <field name="dioses"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="godslayer.templo_form">
+            <field name="name">godslayer templo</field>
+            <field name="model">godslayer.templo</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="coste_oro"/>
+                            <field name="coste_fe"/>
+                        </group>
+
+                        <group>
+                            <field name="imagen" widget="image"/>
+                            <field name="aldea"/>
+                            <field name="dioses"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

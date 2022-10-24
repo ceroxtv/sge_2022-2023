@@ -1,0 +1,41 @@
+<odoo>
+    <data>
+        <!--MUNDO -->
+
+    <record model="ir.ui.view" id="godslayer.mundo_tree">
+      <field name="name">godslayer mundo</field>
+      <field name="model">godslayer.mundo</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="aldea"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="godslayer.mundo_form">
+      <field name="name">godslayer mundo</field>
+      <field name="model">godslayer.mundo</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <group>
+                <field name="image" widget="image"/>
+              </group>
+              <group string="Basic stats">
+                <field name="name"/>
+                <field name="size"/>
+              </group>
+            </group>
+
+            <group>
+              <field name="aldea"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    </data>
+</odoo>
