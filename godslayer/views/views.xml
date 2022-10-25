@@ -33,6 +33,12 @@
       <field name="view_mode">tree,form</field>
     </record>
 
+    <record model="ir.actions.act_window" id="godslayer.action_edificio_type_window">
+      <field name="name">godslayer edificio_type window</field>
+      <field name="res_model">godslayer.edificio_type</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
     <record model="ir.actions.act_window" id="godslayer.action_dioses_window">
       <field name="name">godslayer dioses window</field>
       <field name="res_model">godslayer.dioses</field>
@@ -74,6 +80,9 @@
 
     <menuitem name="Edificio" id="godslayer.menu_edificio_list" parent="godslayer.menu_game"
               action="godslayer.action_edificio_window"/>
+
+    <menuitem name="Edificio Type" id="godslayer.menu_edificio_type_list" parent="godslayer.menu_game"
+              action="godslayer.action_edificio_type_window"/>
 
     <menuitem name="Dioses" id="godslayer.menu_dioses_list" parent="godslayer.menu_game"
               action="godslayer.action_dioses_window"/>

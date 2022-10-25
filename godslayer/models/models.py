@@ -24,6 +24,8 @@ class mundo(models.Model):
         for p in self:
             p.aldea_qty = len(p.aldea)
 
+
+
 class aldea(models.Model):
     _name = 'godslayer.aldea'
     _description = 'aldea'
@@ -44,6 +46,8 @@ class aldea(models.Model):
 
     creation_date = fields.Datetime(default = fields.Datetime.now)
 
+
+
 class religion(models.Model):
     _name = 'godslayer.religion'
     _description = 'religion'
@@ -53,6 +57,8 @@ class religion(models.Model):
     aldea = fields.One2many('godslayer.aldea','religion')
     #templo = fields.One2many('godslayer.templo','religion')
     dioses = fields.One2many('godslayer.dioses','religion')
+
+
 
 class templo(models.Model):
     _name = 'godslayer.templo'
@@ -73,11 +79,13 @@ class templo(models.Model):
         for p in self:
             p.dioses_qty = len(p.dioses)
 
+
+
 class edificio(models.Model):
     _name = 'godslayer.edificio'
     _description = 'edificios'
 
-    edificio_type = fields.Many2one('godslayer.edificio_type')
+    edificio_type = fields.Many2one('godslayer.edificio_type', ondelete = "restrict")
     name = fields.Char(String="Nombre")
     coste_oro = fields.Float(String="Precio", related='edificio_type.coste_oro')
     coste_material = fields.Float(String="Cantidad Material", related='edificio_type.coste_material')
@@ -87,6 +95,8 @@ class edificio(models.Model):
     production_material = fields.Float(related='edificio_type.production_material')
 
     aldea = fields.Many2one('godslayer.aldea')
+
+
 
 class edificio_type(models.Model):
     _name = 'godslayer.edificio_type'
@@ -99,6 +109,7 @@ class edificio_type(models.Model):
     production_oro = fields.Float()
     production_fe = fields.Float()
     production_material = fields.Float()
+
 
 
 class dioses(models.Model):

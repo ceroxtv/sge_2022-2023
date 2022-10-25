@@ -32,6 +32,7 @@
         'views/edificio_view.xml',
         'views/views.xml',
         'views/templates.xml',
+        'demo/data.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
