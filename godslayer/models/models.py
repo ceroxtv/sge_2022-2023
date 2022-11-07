@@ -32,11 +32,12 @@ class aldea(models.Model):
 
     name = fields.Char(String="Nombre", required = True)
     avatar = fields.Image(max_width=200, max_height=200)
+    avatar_tumb = fields.Image(related="avatar", max_width=50, max_height=50)
     password = fields.Char(String="Contrsenya")
 
-    oro = fields.Integer();
-    fe = fields.Integer();
-    materiales= fields.Integer(String="Materiales");
+    oro = fields.Integer()
+    fe = fields.Integer()
+    materiales= fields.Integer(String="Materiales")
 
     mundo = fields.Many2one('godslayer.mundo')
     religion = fields.Many2one('godslayer.religion')
@@ -57,7 +58,12 @@ class religion(models.Model):
     aldea = fields.One2many('godslayer.aldea','religion')
     #templo = fields.One2many('godslayer.templo','religion')
     dioses = fields.One2many('godslayer.dioses','religion')
+    dioses_qty = fields.Integer(String="Cantidad Dioses",compute="get_dioses_qty")
 
+    @api.depends('dioses')
+    def get_dioses_qty(self):
+        for p in self:
+            p.dioses_qty = len(p.dioses)
 
 
 class templo(models.Model):
@@ -106,6 +112,7 @@ class edificio_type(models.Model):
     coste_oro = fields.Float()
     coste_material = fields.Float()
     imagen = fields.Image()
+    imagen_icon = fields.Image(related="imagen", max_width=50, max_height=50)
     production_oro = fields.Float()
     production_fe = fields.Float()
     production_material = fields.Float()

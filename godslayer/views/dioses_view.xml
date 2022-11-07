@@ -5,7 +5,7 @@
             <field name="name">godslayer dios</field>
             <field name="model">godslayer.dioses</field>
             <field name="arch" type="xml">
-                <tree>
+                <tree decoration-danger="total>1000">
                     <field name="name"/>
                     <field name="total"/>
                 </tree>

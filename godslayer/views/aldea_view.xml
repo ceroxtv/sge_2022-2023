@@ -5,6 +5,18 @@
             <field name="name">godslayer aldea</field>
             <field name="model">godslayer.aldea</field>
             <field name="arch" type="xml">
+                <tree>
+                    <field name="avatar_tumb" widget="image"/>
+                    <field name="name"/>
+                    <field name="mundo" widget="many2one_tags"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="godslayer.aldea_form">
+            <field name="name">godslayer aldea</field>
+            <field name="model">godslayer.aldea</field>
+            <field name="arch" type="xml">
                 <form>
                     <sheet>
                         <group>
@@ -41,7 +53,6 @@
                                     <field name="edificio"/>
                                 </group>
                             </page>
-
                         </notebook>
                     </sheet>
                 </form>

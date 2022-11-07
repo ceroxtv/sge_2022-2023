@@ -1,0 +1,43 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="godslayer.edificio_type_tree">
+            <field name="name">godslayer edificio type</field>
+            <field name="model">godslayer.edificio_type</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="imagen_icon" widget="image"/>
+                    <field name="name"/>
+                    <field name="coste_oro"/>
+                    <field name="coste_material"/>
+                    <field name="production_oro"/>
+                    <field name="production_material"/>
+                    <field name="production_fe"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="godslayer.edificio_type_form">
+            <field name="name">godslayer edificio type</field>
+            <field name="model">godslayer.edificio_type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="coste_oro"/>
+                                <field name="coste_material"/>
+                                <field name="production_oro"/>
+                                <field name="production_material"/>
+                                <field name="production_fe"/>
+                            </group>
+                            <group>
+                                <field name="imagen" widget="image"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>
