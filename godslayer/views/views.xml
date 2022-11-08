@@ -42,7 +42,7 @@
     <record model="ir.actions.act_window" id="godslayer.action_dioses_window">
       <field name="name">godslayer dioses window</field>
       <field name="res_model">godslayer.dioses</field>
-      <field name="view_mode">tree,form</field>
+      <field name="view_mode">kanban,tree,form</field>
     </record>
     <!-- server action to the one above -->
     <!--

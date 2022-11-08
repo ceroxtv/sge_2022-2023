@@ -5,7 +5,7 @@
             <field name="name">godslayer dios</field>
             <field name="model">godslayer.dioses</field>
             <field name="arch" type="xml">
-                <tree decoration-danger="total>1000">
+                <tree decoration-danger="total>=1000" decoration-info="total&lt;1000">
                     <field name="name"/>
                     <field name="total"/>
                 </tree>
@@ -38,5 +38,46 @@
             </field>
         </record>
 
+        <record model="ir.ui.view" id="godslayer.dioses_kanban">
+            <field name="name">godslayer dioses kanban</field>
+            <field name="model">godslayer.dioses</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <!--list of field to be loaded -->
+                    <field name="id"/>
+                    <field name="name" />
+                    <field name="imagen" />
+                    <field name="total" />
+                    <field name="health" />
+                    <field name="atack" />
+                    <field name="defense" />
+                    <field name="speed" />
+                    <field name="power" />
+
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_card o_kanban_record_has_image_fill ">
+                                <div class="o_kanban_image_fill_left o_kanban_image_full d-none d-md-block"
+                                t-attf-style="background-image:url('#{kanban_image('godslayer.dioses','imagen', record.id.value, placeholder)}')">
+                                </div>
+
+                                <div class="oe_kanban_details d-flex flex-column">
+                                    <a type="open">
+                                        <h4 class="o_kanban_record_title oe_partner_heading"><field name="name"/></h4></a>
+                                    <ul>
+                                        <li>Vida: <field name="health"/></li>
+                                        <li>Ataque: <field name="atack"/></li>
+                                        <li>Defensa: <field name="defense"/></li>
+                                        <li>Velocidad: <field name="speed"/></li>
+                                        <li>Poder: <field name="power"/></li>
+                                        <li><strong>Total: <field name="total"/></strong></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
     </data>
 </odoo>
