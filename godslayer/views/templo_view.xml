@@ -19,6 +19,7 @@
             <field name="arch" type="xml">
                 <form>
                     <sheet>
+                       <group>
                         <group>
                             <field name="name"/>
                             <field name="coste_oro"/>
@@ -27,9 +28,13 @@
 
                         <group>
                             <field name="imagen" widget="image"/>
-                            <field name="aldea"/>
-                            <field name="dioses"/>
                         </group>
+                      </group>
+
+                      <group>
+                          <field name="aldea" widget="many2one"/>
+                          <field name="dioses" widget="many2one"/>
+                      </group>
                     </sheet>
                 </form>
             </field>
