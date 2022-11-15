@@ -56,7 +56,7 @@ class religion(models.Model):
     name = fields.Char(String="Nombre", required=True)
 
     aldea = fields.One2many('godslayer.aldea','religion')
-    #templo = fields.One2many('godslayer.templo','religion')
+    templo = fields.One2many('godslayer.templo','religion')
     dioses = fields.One2many('godslayer.dioses','religion')
     dioses_qty = fields.Integer(String="Cantidad Dioses",compute="get_dioses_qty")
 
@@ -70,20 +70,27 @@ class templo(models.Model):
     _name = 'godslayer.templo'
     _description = 'templo'
 
-    name = fields.Char(String="Nombre", required = True)
+    name = fields.Char(String="Nombre Templo",compute="get_nombre")
+    level = fields.Integer(String ="Nivel", default = 1)
     coste_oro = fields.Integer(String = "Precio")
     coste_fe = fields.Integer(String =  "Cantidad Fe")
     imagen = fields.Image(max_width=150, max_height=150)
 
     aldea = fields.Many2one('godslayer.aldea')
     dioses = fields.Many2one('godslayer.dioses')
-    #religion = fields.Many2one('godslayer.religion')
+    religion = fields.Many2one('godslayer.religion')
     dioses_qty = fields.Integer(compute="get_dioses_qty")
 
     @api.depends('dioses')
     def get_dioses_qty(self):
         for p in self:
             p.dioses_qty = len(p.dioses)
+
+
+    @api.depends('religion')
+    def get_nombre(self):
+        for p in self:
+            p.name='Templo '+str(p.religion.name)
 
 
 
