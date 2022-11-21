@@ -5,10 +5,40 @@
             <field name="name">godslayer dios</field>
             <field name="model">godslayer.dioses</field>
             <field name="arch" type="xml">
-                <tree decoration-danger="total>=1000" decoration-info="total&lt;1000">
+                <tree decoration-danger="total>=310" decoration-info="total&lt;309">
                     <field name="name"/>
                     <field name="total"/>
                 </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="godslayer.dioses_search">
+            <field name="name">godslayer dios</field>
+            <field name="model">godslayer.dioses</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="health"/>
+                    <field name="atack"/>
+                    <field name="defense"/>
+                    <field name="speed"/>
+                    <field name="power"/>
+                    <field name="total"/>
+                    <field name="religion"/>
+
+                    <field name="health" string="Max health" filter_domain="[('health','&gt;',self)]"/>
+                    <field name="atack" string="Max atack" filter_domain="[('atack','&gt;',self)]"/>
+                    <field name="defense" string="Max defense" filter_domain="[('defense','&gt;',self)]"/>
+                    <field name="speed" string="Max speed" filter_domain="[('speed','&gt;',self)]"/>
+                    <field name="power" string="Max power" filter_domain="[('power','&gt;',self)]"/>
+                    <field name="total" string="Max total" filter_domain="[('total','&gt;',self)]"/>
+
+                    <filter name="dioses_op" string="One piece" domain="[('religion','=','One piece')]"/>
+                    <filter name="dioses_mt" string="Mistborn" domain="[('religion','=','Mistborn')]"/>
+                    <filter name="dioses_ru" string="Rueda" domain="[('religion','=','Rueda del Tiempo')]"/>
+                    <filter name="dioses_gw" string="God of War" domain="[('religion','=','God of War')]"/>
+
+                    <filter name="group_by_religion" string="Agrupa Religion" context="{'group_by':'religion'}"/>
+                </search>
             </field>
         </record>
 
@@ -25,11 +55,11 @@
                             </group>
 
                             <group>
-                                <field name="health"/>
-                                <field name="atack"/>
-                                <field name="defense"/>
-                                <field name="speed"/>
-                                <field name="power"/>
+                                <field name="health" widget="progressbar"/>
+                                <field name="atack" widget="progressbar"/>
+                                <field name="defense" widget="progressbar"/>
+                                <field name="speed" widget="progressbar"/>
+                                <field name="power" widget="progressbar"/>
                                 <field name="total"/>
                             </group>
                         </group>

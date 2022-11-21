@@ -13,6 +13,29 @@
             </field>
         </record>
 
+        <record model="ir.ui.view" id="godslayer.aldea_search">
+            <field name="name">godslayer aldea</field>
+            <field name="model">godslayer.aldea</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="oro"/>
+                    <field name="fe"/>
+                    <field name="religion"/>
+
+                    <field name="fe" string="Max fe" filter_domain="[('fe','>=',self)]"/>
+                    <field name="oro" string="Max oro" filter_domain="[('oro','>=',self)]"/>
+                    <field name="religion" string="Max material" filter_domain="[('materiales','>=',self)]"/>
+
+                    <filter name="religion_op" string="One piece" domain="[('religion','=','One piece')]"/>
+                    <filter name="religion_mt" string="Mistborn" domain="[('religion','=','Mistborn')]"/>
+                    <filter name="religion_ru" string="Rueda" domain="[('religion','=','Rueda del Tiempo')]"/>
+                    <filter name="religion_gw" string="God of War" domain="[('religion','=','God of War')]"/>
+                    <filter name="group_by_religion" string="Agrupa Religion" context="{'group_by':'religion'}"/>
+                </search>
+            </field>
+        </record>
+
         <record model="ir.ui.view" id="godslayer.aldea_form">
             <field name="name">godslayer aldea</field>
             <field name="model">godslayer.aldea</field>
@@ -56,6 +79,47 @@
                         </notebook>
                     </sheet>
                 </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="godslayer.aldea_kanban">
+            <field name="name">godslayer aldea kanban</field>
+            <field name="model">godslayer.aldea</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="id"/>
+                    <field name="name"/>
+                    <field name="avatar"/>
+                    <field name="oro"/>
+                    <field name="fe"/>
+                    <field name="materiales"/>
+                    <field name="religion"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_card o_kanban_record_has_image_fill ">
+                                <div class="o_kanban_image_fill_left o_kanban_image_full d-none d-md-block"
+                                     t-attf-style="background-image:url('#{kanban_image('godslayer.aldea',
+                                                   'avatar', record.id.value, placeholder)}')">
+                                </div>
+
+                                <div class="oe_kanban_details d-flex flex-column">
+                                    <a type="open">
+                                        <h4 class="o_kanban_record_title oe_partner_heading">
+                                            <field name="name"/>
+                                        </h4>
+                                    </a>
+                                    <ul>
+                                        <li><strong>Religion: <field name="religion"/></strong></li>
+                                        <li>Oro: <field name="oro"/></li>
+                                        <li>Fe: <field name="fe"/></li>
+                                        <li>Materiales: <field name="materiales"/></li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
             </field>
         </record>
     </data>
