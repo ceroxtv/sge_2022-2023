@@ -35,17 +35,23 @@ class aldea(models.Model):
     avatar_tumb = fields.Image(related="avatar", max_width=50, max_height=50)
     password = fields.Char(String="Contrsenya")
 
-    oro = fields.Integer()
-    fe = fields.Integer()
-    materiales= fields.Integer(String="Materiales")
+    oro = fields.Integer(default=50)
+    fe = fields.Integer(default=50)
+    materiales= fields.Integer(String="Materiales", default=50)
 
     mundo = fields.Many2one('godslayer.mundo')
-    religion = fields.Many2one('godslayer.religion')
+    religion = fields.Many2one('godslayer.religion', required=True)
 
     templos = fields.One2many('godslayer.templo','aldea')
     edificio = fields.One2many('godslayer.edificio', 'aldea')
 
     creation_date = fields.Datetime(default = fields.Datetime.now)
+
+    #@api.onchange('religion')
+    #def _onchange_templo(self):
+    #    if self.religion.name=="Rueda del Tiempo":
+
+
 
 
 
@@ -72,8 +78,6 @@ class templo(models.Model):
 
     name = fields.Char(String="Nombre Templo",compute="get_nombre")
     level = fields.Integer(String ="Nivel", default = 1)
-    coste_oro = fields.Integer(String = "Precio")
-    coste_fe = fields.Integer(String =  "Cantidad Fe")
     imagen = fields.Image(max_width=150, max_height=150)
 
     aldea = fields.Many2one('godslayer.aldea')

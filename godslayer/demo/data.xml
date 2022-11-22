@@ -1513,8 +1513,6 @@ cS4y36wRTicFzMBfMRwHNwDgv0CcLHsTqX2hbsRzlcRxDkCtzngvpiwpJp3DBcXbwgg0J3K/CEab
 GUqCmRXiJ3SKFNTBatrr4joy+0yjrlPSWjaD5P4iQQPaXQzXJdRSxoo1gS/Q0P3imPOUx8zFWTsg
 eXjEtZd+kCYfu7TEPbYjIZOVsnIQ83MYBeSpWgjSZIXzOtRfcOoAc3G4XhnWpeRU5tP/2Q==</field>
         </record>
-
-
         <record id="godslayer.religion_god" model="godslayer.religion">
             <field name="name">God of War</field>
         </record>
@@ -1530,6 +1528,8 @@ eXjEtZd+kCYfu7TEPbYjIZOVsnIQ83MYBeSpWgjSZIXzOtRfcOoAc3G4XhnWpeRU5tP/2Q==</field>
         <record id="godslayer.religion_rueda" model="godslayer.religion">
             <field name="name">Rueda del Tiempo</field>
         </record>
+
+
 
         <!-- DIOSES -->
         <record id="godslayer.dioses_kratos" model="godslayer.dioses">

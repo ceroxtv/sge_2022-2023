@@ -23,8 +23,6 @@
                         <group>
                             <field name="name"/>
                             <field name="level"/>
-                            <field name="coste_oro"/>
-                            <field name="coste_fe"/>
                         </group>
 
                         <group>
