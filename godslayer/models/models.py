@@ -62,7 +62,7 @@ class religion(models.Model):
     name = fields.Char(String="Nombre", required=True)
 
     aldea = fields.One2many('godslayer.aldea','religion')
-    templo = fields.One2many('godslayer.templo','religion')
+    templo_type = fields.Many2one('godslayer.templo_type')
     dioses = fields.One2many('godslayer.dioses','religion')
     dioses_qty = fields.Integer(String="Cantidad Dioses",compute="get_dioses_qty")
 
@@ -76,13 +76,16 @@ class templo(models.Model):
     _name = 'godslayer.templo'
     _description = 'templo'
 
-    name = fields.Char(String="Nombre Templo",compute="get_nombre")
-    level = fields.Integer(String ="Nivel", default = 1)
-    imagen = fields.Image(max_width=150, max_height=150)
+    templo_type = fields.Many2one('godslayer.templo_type', ondelete="restrict")
+    name = fields.Char(String="Nombre Templo", related='templo_type.name')
+    coste_oro = fields.Float(String="Precio", related='templo_type.coste_oro')
+    coste_material = fields.Float(String="Cantidad Material", related='templo_type.coste_material')
+    coste_fe = fields.Float(String="Cantidad Fe", related='templo_type.coste_fe')
+    imagen = fields.Image(max_width=150, max_height=150, related='templo_type.imagen')
 
     aldea = fields.Many2one('godslayer.aldea')
     dioses = fields.Many2one('godslayer.dioses')
-    religion = fields.Many2one('godslayer.religion')
+    religion = fields.Many2one('godslayer.religion', related='templo_type.religion')
     dioses_qty = fields.Integer(compute="get_dioses_qty")
 
     @api.depends('dioses')
@@ -90,11 +93,21 @@ class templo(models.Model):
         for p in self:
             p.dioses_qty = len(p.dioses)
 
+    def create_temple(self):
+        for templo in self:
+            print("Funciona")
 
-    @api.depends('religion')
-    def get_nombre(self):
-        for p in self:
-            p.name='Templo '+str(p.religion.name)
+class templo_type(models.Model):
+    _name = 'godslayer.templo_type'
+    _description = 'templo_type'
+
+    name = fields.Char(String="Nombre", required=True)
+    coste_oro = fields.Float()
+    coste_material = fields.Float()
+    coste_fe = fields.Float()
+    imagen = fields.Image()
+    religion = fields.Many2one('godslayer.religion')
+
 
 
 

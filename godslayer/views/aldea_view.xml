@@ -67,7 +67,40 @@
 
                             <page string="Templo">
                                 <group>
-                                    <field name="templos"/>
+                                    <field name="templos" mode="kanban">
+                                    <kanban>
+                                        <field name="id"/>
+                                        <field name="name"/>
+                                        <field name="imagen"/>
+                                        <field name="dioses"/>
+                                        <field name="religion"/>
+
+                                        <templates>
+                                                <t t-name="kanban-box">
+                                                    <div t-attf-class="oe_kanban_card o_kanban_record_has_image_fill ">
+                                                        <div class="o_kanban_image_fill_left o_kanban_image_full d-none d-md-block"
+                                                             t-attf-style="background-image:url('#{kanban_image('godslayer.templo',
+                                                                            'imagen', record.id.value, placeholder)}')">
+                                                        </div>
+                                                        <div class="oe_kanban_details d-flex flex-column">
+                                                            <a type="open">
+                                                                <h4 class="o_kanban_record_title oe_partner_heading"><field name="name"/></h4></a>
+                                                            <ul>
+                                                                <li>Religion: <field name="religion"/></li> <li>Dioses: <field name="dioses"/></li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="oe_kanban_details d-flex flex-column">
+                                                            <button name="create_temple"
+                                                                    type="object"
+                                                                    string="Fabricate"
+                                                                    class="btn btn-primary"
+                                                                    context="{'ctx_aldea':parent.id}">Create</button>
+                                                        </div>
+                                                    </div>
+                                                </t>
+                                            </templates>
+                                    </kanban>
+                                    </field>
                                 </group>
                             </page>
 

@@ -26,6 +26,11 @@
       <field name="view_mode">tree,form</field>
     </record>
 
+    <record model="ir.actions.act_window" id="godslayer.action_templo_type_window">
+      <field name="name">godslayer templo type window</field>
+      <field name="res_model">godslayer.templo_type</field>
+      <field name="view_mode">tree,form</field>
+    </record>
 
     <record model="ir.actions.act_window" id="godslayer.action_edificio_window">
       <field name="name">godslayer edificio window</field>
@@ -77,6 +82,9 @@
 
     <menuitem name="Templo" id="godslayer.menu_templo_list" parent="godslayer.menu_game"
               action="godslayer.action_templo_window"/>
+
+    <menuitem name="Templo Type" id="godslayer.menu_templo_type_list" parent="godslayer.menu_game"
+              action="godslayer.action_templo_type_window"/>
 
     <menuitem name="Edificio" id="godslayer.menu_edificio_list" parent="godslayer.menu_game"
               action="godslayer.action_edificio_window"/>
