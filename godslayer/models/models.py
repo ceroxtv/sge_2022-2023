@@ -43,6 +43,8 @@ class aldea(models.Model):
     religion = fields.Many2one('godslayer.religion', required=True)
 
     templos = fields.One2many('godslayer.templo','aldea')
+    templos_disponible = fields.Many2many('godslayer.templo_type',compute="get_avaliable_temples")
+
     edificio = fields.One2many('godslayer.edificio', 'aldea')
 
     creation_date = fields.Datetime(default = fields.Datetime.now)
@@ -50,7 +52,10 @@ class aldea(models.Model):
     #@api.onchange('religion')
     #def _onchange_templo(self):
     #    if self.religion.name=="Rueda del Tiempo":
-
+    @api.depends('religion')
+    def get_avaliable_temples(self):  # ORM
+        for c in self:
+            c.templos_disponible = self.env['godslayer.templo_type'].search([('religion', '=', c.religion.id)])
 
 
 
@@ -93,9 +98,7 @@ class templo(models.Model):
         for p in self:
             p.dioses_qty = len(p.dioses)
 
-    def create_temple(self):
-        for templo in self:
-            print("Funciona")
+
 
 class templo_type(models.Model):
     _name = 'godslayer.templo_type'
@@ -108,7 +111,9 @@ class templo_type(models.Model):
     imagen = fields.Image()
     religion = fields.Many2one('godslayer.religion')
 
-
+    def create_temple(self):
+        for templo_type in self:
+            print("hola")
 
 
 class edificio(models.Model):
