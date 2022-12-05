@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api
+import random
 
 
 class mundo(models.Model):
@@ -44,7 +45,6 @@ class aldea(models.Model):
 
     templos = fields.One2many('godslayer.templo','aldea')
     templos_disponible = fields.Many2many('godslayer.templo_type',compute="get_avaliable_temples")
-
     edificio = fields.One2many('godslayer.edificio', 'aldea')
 
     creation_date = fields.Datetime(default = fields.Datetime.now)
@@ -112,8 +112,19 @@ class templo_type(models.Model):
     religion = fields.Many2one('godslayer.religion')
 
     def create_temple(self):
-        for templo_type in self:
-            print("hola")
+        for c in self:
+            aldea = self.env['godslayer.aldea'].browse(self.env.context['ctx_aldea'])[0]
+            dios = self.env['godslayer.dioses'].search([('religion', '=', c.religion.id)])
+            d = random.choice(dios)
+            if aldea.oro >= c.coste_oro and aldea.fe >= c.coste_fe and aldea.materiales >= c.coste_material:
+                self.env['godslayer.templo'].create({
+                    "aldea": aldea.id,
+                    "templo_type": c.id,
+                    "dioses":d.id
+                })
+                aldea.oro -= c.coste_oro
+                aldea.fe -= c.coste_fe
+                aldea.materiales -= c.coste_material
 
 
 class edificio(models.Model):
@@ -130,8 +141,19 @@ class edificio(models.Model):
     production_material = fields.Float(related='edificio_type.production_material')
 
     aldea = fields.Many2one('godslayer.aldea')
-
-
+    
+    @api.model
+    def produce(self):
+       for b in self.search([]):
+            if(b.aldea):
+                aldea = b.aldea
+                oro = aldea.oro + b.production_oro
+                fe = aldea.fe + b.production_fe
+                materiales = aldea.materiales + b.production_material
+                aldea.write({
+                    "oro":oro,
+                    "fe":fe,
+                    "materiales":materiales})
 
 class edificio_type(models.Model):
     _name = 'godslayer.edificio_type'
