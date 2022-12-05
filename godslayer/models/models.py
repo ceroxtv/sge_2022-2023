@@ -39,6 +39,10 @@ class aldea(models.Model):
     oro = fields.Integer(default=50)
     fe = fields.Integer(default=50)
     materiales= fields.Integer(String="Materiales", default=50)
+    production_oro = fields.Float(compute="_get_total_productions")
+    production_fe = fields.Float(compute="_get_total_productions")
+    production_material = fields.Float(compute="_get_total_productions")
+    
 
     mundo = fields.Many2one('godslayer.mundo')
     religion = fields.Many2one('godslayer.religion', required=True)
@@ -49,14 +53,34 @@ class aldea(models.Model):
 
     creation_date = fields.Datetime(default = fields.Datetime.now)
 
-    #@api.onchange('religion')
-    #def _onchange_templo(self):
-    #    if self.religion.name=="Rueda del Tiempo":
     @api.depends('religion')
     def get_avaliable_temples(self):  # ORM
         for c in self:
             c.templos_disponible = self.env['godslayer.templo_type'].search([('religion', '=', c.religion.id)])
+    
+    #@api.depends('edificio')
+    #def _get_total_productions(self):
+    #    for h in self:
+    #        h.production_oro = sum(h.edificio.mapped('production_oro'))
+    #        h.production_fe = sum(h.edificio.mapped('production_fe'))
+    #        h.production_material = sum(h.edificio.mapped('production_material'))
+            
+    
+    #@api.model
+    #def produce(self):  # ORM CRON
+    #    self.search([]).produce_aldea()
+        
+        
+    #def produce_aldea(self):
+    #    for e in self:
+    #        oro = e.oro + e.production_oro
+    #        fe = e.fe + e.production_fe
+    #        materiales = e.materiales + e.production_material
 
+    #        aldea.write({
+    #            "oro":oro,
+    #           "fe":fe,
+    #            "materiales":materiales})
 
 
 
