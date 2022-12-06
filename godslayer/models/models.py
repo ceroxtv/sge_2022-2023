@@ -83,7 +83,6 @@ class aldea(models.Model):
             })
 
 
-
 class religion(models.Model):
     _name = 'godslayer.religion'
     _description = 'religion'
@@ -149,8 +148,6 @@ class templo_type(models.Model):
                 aldea.oro -= c.coste_oro
                 aldea.fe -= c.coste_fe
                 aldea.materiales -= c.coste_material
-            #else:
-            #    raise ValidationError("Recursos insuficientes para crear un templo")
 
 
 class edificio(models.Model):
@@ -162,6 +159,7 @@ class edificio(models.Model):
     coste_oro = fields.Float(String="Precio", related='edificio_type.coste_oro')
     coste_material = fields.Float(String="Cantidad Material", related='edificio_type.coste_material')
     imagen = fields.Image(max_width=150, max_height=150, related='edificio_type.imagen')
+
     production_oro = fields.Float(compute='_get_productions')
     production_fe=fields.Float(compute='_get_productions')
     production_material = fields.Float(compute='_get_productions')
@@ -183,7 +181,6 @@ class edificio(models.Model):
                 b.production_oro =0
                 b.production_fe =0
                 b.production_material =0     
-    
 
 class edificio_type(models.Model):
     _name = 'godslayer.edificio_type'
