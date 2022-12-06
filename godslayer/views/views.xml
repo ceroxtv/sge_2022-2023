@@ -1,0 +1,98 @@
+<odoo>
+  <data>
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="godslayer.action_mundo_window">
+      <field name="name">godslayer mundo window</field>
+      <field name="res_model">godslayer.mundo</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="godslayer.action_aldea_window">
+      <field name="name">godslayer aldeas window</field>
+      <field name="res_model">godslayer.aldea</field>
+      <field name="view_mode">kanban,tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="godslayer.action_religion_window">
+      <field name="name">godslayer religion window</field>
+      <field name="res_model">godslayer.religion</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="godslayer.action_templo_window">
+      <field name="name">godslayer templo window</field>
+      <field name="res_model">godslayer.templo</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="godslayer.action_templo_type_window">
+      <field name="name">godslayer templo type window</field>
+      <field name="res_model">godslayer.templo_type</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="godslayer.action_edificio_window">
+      <field name="name">godslayer edificio window</field>
+      <field name="res_model">godslayer.edificio</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="godslayer.action_edificio_type_window">
+      <field name="name">godslayer edificio_type window</field>
+      <field name="res_model">godslayer.edificio_type</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="godslayer.action_dioses_window">
+      <field name="name">godslayer dioses window</field>
+      <field name="res_model">godslayer.dioses</field>
+      <field name="view_mode">kanban,tree,form</field>
+    </record>
+    <!-- server action to the one above -->
+    <!--
+        <record model="ir.actions.server" id="godslayer.action_server">
+          <field name="name">godslayer server</field>
+          <field name="model_id" ref="model_godslayer_godslayer"/>
+          <field name="state">code</field>
+          <field name="code">
+            action = {
+              "type": "ir.actions.act_window",
+              "view_mode": "tree,form",
+              "res_model": model._name,
+            }
+          </field>
+        </record>
+    -->
+
+    <!-- Top menu item -->
+
+    <menuitem name="godslayer" id="godslayer.menu_root"/>
+    <!-- menu categories -->
+    <menuitem name="Menu 1" id="godslayer.menu_game" parent="godslayer.menu_root"/>
+    <!-- actions -->
+    <menuitem name="Mundo" id="godslayer.menu_mundo_list" parent="godslayer.menu_game"
+              action="godslayer.action_mundo_window"/>
+
+    <menuitem name="Aldea" id="godslayer.menu_aldea_list" parent="godslayer.menu_game"
+              action="godslayer.action_aldea_window"/>
+
+    <menuitem name="Religion" id="godslayer.menu_religion_list" parent="godslayer.menu_game"
+              action="godslayer.action_religion_window"/>
+
+    <menuitem name="Templo" id="godslayer.menu_templo_list" parent="godslayer.menu_game"
+              action="godslayer.action_templo_window"/>
+
+    <menuitem name="Templo Type" id="godslayer.menu_templo_type_list" parent="godslayer.menu_game"
+              action="godslayer.action_templo_type_window"/>
+
+    <menuitem name="Edificio" id="godslayer.menu_edificio_list" parent="godslayer.menu_game"
+              action="godslayer.action_edificio_window"/>
+
+    <menuitem name="Edificio Type" id="godslayer.menu_edificio_type_list" parent="godslayer.menu_game"
+              action="godslayer.action_edificio_type_window"/>
+
+    <menuitem name="Dioses" id="godslayer.menu_dioses_list" parent="godslayer.menu_game"
+              action="godslayer.action_dioses_window"/>
+  </data>
+</odoo>

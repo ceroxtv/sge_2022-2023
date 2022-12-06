@@ -1,0 +1,113 @@
+<odoo>
+    <data>
+        <!-- DIOSES -->
+        <record model="ir.ui.view" id="godslayer.dioses_tree">
+            <field name="name">godslayer dios</field>
+            <field name="model">godslayer.dioses</field>
+            <field name="arch" type="xml">
+                <tree decoration-danger="total>=310" decoration-info="total&lt;309">
+                    <field name="name"/>
+                    <field name="total"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="godslayer.dioses_search">
+            <field name="name">godslayer dios</field>
+            <field name="model">godslayer.dioses</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="health"/>
+                    <field name="atack"/>
+                    <field name="defense"/>
+                    <field name="speed"/>
+                    <field name="power"/>
+                    <field name="total"/>
+                    <field name="religion"/>
+
+                    <field name="health" string="Max health" filter_domain="[('health','&gt;',self)]"/>
+                    <field name="atack" string="Max atack" filter_domain="[('atack','&gt;',self)]"/>
+                    <field name="defense" string="Max defense" filter_domain="[('defense','&gt;',self)]"/>
+                    <field name="speed" string="Max speed" filter_domain="[('speed','&gt;',self)]"/>
+                    <field name="power" string="Max power" filter_domain="[('power','&gt;',self)]"/>
+                    <field name="total" string="Max total" filter_domain="[('total','&gt;',self)]"/>
+
+                    <filter name="dioses_op" string="One piece" domain="[('religion','=','One piece')]"/>
+                    <filter name="dioses_mt" string="Mistborn" domain="[('religion','=','Mistborn')]"/>
+                    <filter name="dioses_ru" string="Rueda" domain="[('religion','=','Rueda del Tiempo')]"/>
+                    <filter name="dioses_gw" string="God of War" domain="[('religion','=','God of War')]"/>
+
+                    <filter name="group_by_religion" string="Agrupa Religion" context="{'group_by':'religion'}"/>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="godslayer.dioses_form">
+            <field name="name">godslayer dios</field>
+            <field name="model">godslayer.dioses</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="imagen" widget="image"/>
+                            </group>
+
+                            <group>
+                                <field name="health" widget="progressbar"/>
+                                <field name="atack" widget="progressbar"/>
+                                <field name="defense" widget="progressbar"/>
+                                <field name="speed" widget="progressbar"/>
+                                <field name="power" widget="progressbar"/>
+                                <field name="total"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="godslayer.dioses_kanban">
+            <field name="name">godslayer dioses kanban</field>
+            <field name="model">godslayer.dioses</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <!--list of field to be loaded -->
+                    <field name="id"/>
+                    <field name="name" />
+                    <field name="imagen" />
+                    <field name="total" />
+                    <field name="health" />
+                    <field name="atack" />
+                    <field name="defense" />
+                    <field name="speed" />
+                    <field name="power" />
+
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_card o_kanban_record_has_image_fill ">
+                                <div class="o_kanban_image_fill_left o_kanban_image_full d-none d-md-block"
+                                t-attf-style="background-image:url('#{kanban_image('godslayer.dioses','imagen', record.id.value, placeholder)}')">
+                                </div>
+
+                                <div class="oe_kanban_details d-flex flex-column">
+                                    <a type="open">
+                                        <h4 class="o_kanban_record_title oe_partner_heading"><field name="name"/></h4></a>
+                                    <ul>
+                                        <li>Vida: <field name="health"/></li>
+                                        <li>Ataque: <field name="atack"/></li>
+                                        <li>Defensa: <field name="defense"/></li>
+                                        <li>Velocidad: <field name="speed"/></li>
+                                        <li>Poder: <field name="power"/></li>
+                                        <li><strong>Total: <field name="total"/></strong></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+    </data>
+</odoo>
