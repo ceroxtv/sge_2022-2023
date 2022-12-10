@@ -34,6 +34,7 @@
         'views/religion_view.xml',
         'views/views.xml',
         'views/templates.xml',
+        'views/battle_view.xml',
         'demo/data.xml',
         'views/cron.xml',
     ],

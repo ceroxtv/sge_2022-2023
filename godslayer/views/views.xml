@@ -49,6 +49,12 @@
       <field name="res_model">godslayer.dioses</field>
       <field name="view_mode">kanban,tree,form</field>
     </record>
+
+    <record model="ir.actions.act_window" id="godslayer.action_battle_window">
+      <field name="name">godslayer battle window</field>
+      <field name="res_model">godslayer.battle</field>
+      <field name="view_mode">tree,form,calendar</field>
+    </record>
     <!-- server action to the one above -->
     <!--
         <record model="ir.actions.server" id="godslayer.action_server">
@@ -94,5 +100,8 @@
 
     <menuitem name="Dioses" id="godslayer.menu_dioses_list" parent="godslayer.menu_game"
               action="godslayer.action_dioses_window"/>
+    
+    <menuitem name="Battle" id="godslayer.menu_battle_list" parent="godslayer.menu_game"
+              action="godslayer.action_battle_window"/>
   </data>
 </odoo>

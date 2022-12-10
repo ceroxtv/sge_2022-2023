@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 import random
+from datetime import datetime, timedelta
 
 
 class mundo(models.Model):
@@ -35,6 +37,7 @@ class aldea(models.Model):
     avatar = fields.Image(max_width=200, max_height=200)
     avatar_tumb = fields.Image(related="avatar", max_width=50, max_height=50)
     password = fields.Char(String="Contrsenya")
+    location = fields.Integer(default=random.randint(1,9999))
 
     oro = fields.Float(default=50)
     fe = fields.Float(default=50)
@@ -48,6 +51,7 @@ class aldea(models.Model):
 
     templos = fields.One2many('godslayer.templo','aldea')
     templos_disponible = fields.Many2many('godslayer.templo_type',compute="get_avaliable_temples")
+    dioses_disponibles = fields.Many2many('godslayer.dioses',compute="get_avaliable_dioses")
     edificio = fields.One2many('godslayer.edificio', 'aldea')
 
     creation_date = fields.Datetime(default = fields.Datetime.now)
@@ -56,6 +60,11 @@ class aldea(models.Model):
     def get_avaliable_temples(self):  # ORM
         for c in self:
             c.templos_disponible = self.env['godslayer.templo_type'].search([('religion', '=', c.religion.id)])
+            
+    @api.depends('templos')
+    def get_avaliable_dioses(self):
+        for c in self:
+            c.dioses_disponibles = self.env['godslayer.dioses'].search([('templo.aldea','=',c.id)])
     
     @api.depends('edificio')
     def _get_total_productions(self):
@@ -64,11 +73,9 @@ class aldea(models.Model):
             h.production_fe = sum(h.edificio.mapped('production_fe'))
             h.production_material = sum(h.edificio.mapped('production_material'))
             
-    
     @api.model
     def produce(self):  # ORM CRON
-        self.search([]).produce_aldea()
-        
+        self.search([]).produce_aldea()    
         
     def produce_aldea(self):
         for e in self:
@@ -81,6 +88,11 @@ class aldea(models.Model):
                 "fe":fe,
                 "materiales":materiales
             })
+    def distance(self,other_aldea):
+        distance = 0
+        if(len(self) > 0 and len(other_aldea) > 0):
+            distance = abs(self.location - other_aldea.location)
+            return distance
 
 
 class religion(models.Model):
@@ -155,7 +167,7 @@ class edificio(models.Model):
     _description = 'edificios'
 
     edificio_type = fields.Many2one('godslayer.edificio_type', ondelete = "restrict")
-    name = fields.Char(String="Nombre")
+    name = fields.Char(related='edificio_type.name')
     coste_oro = fields.Float(String="Precio", related='edificio_type.coste_oro')
     coste_material = fields.Float(String="Cantidad Material", related='edificio_type.coste_material')
     imagen = fields.Image(max_width=150, max_height=150, related='edificio_type.imagen')
@@ -220,4 +232,75 @@ class dioses(models.Model):
 
 
 
+class battle(models.Model): #falta terminar
+    _name = 'godslayer.battle'
+    _description = 'Battles'
+
+    name = fields.Char()
+    date_start = fields.Datetime(readonly=True, default=fields.Datetime.now)
+    date_end = fields.Datetime(compute='_get_time')
+    time = fields.Float(compute='_get_time')
+    distance = fields.Float(compute='_get_time')
+    progress = fields.Float()
+    state = fields.Selection([('1', 'Preparation'), ('2', 'Send'), ('3', 'Finished')], default='1')
+    aldea1 = fields.Many2one('godslayer.aldea')
+    aldea2 = fields.Many2one('godslayer.aldea')
+    dioses_list = fields.One2many('godslayer.battle_dioses_rel', 'battle_id')
+    
+    @api.depends('dioses_list', 'aldea1', 'aldea2')
+    def _get_time(self):
+        for b in self:
+            b.time = 0
+            b.distance = 0
+            b.date_end = fields.Datetime.now()
+            if len(b.aldea1) > 0 and len(b.aldea2) > 0 and len(b.dioses_list) > 0 and len(
+                    b.dioses_list.dioses_id) > 0:
+                b.distance = b.aldea1.distance(b.aldea2)
+                min_speed = b.dioses_list.dioses_id.sorted(lambda s: s.speed).mapped('speed')[0]
+                b.time = b.distance / min_speed
+                b.date_end = fields.Datetime.to_string(
+                    fields.Datetime.from_string(b.date_start) + timedelta(minutes=b.time))
+
+
+    @api.onchange('aldea1')
+    def onchange_aldea1(self):
+        print(self)
+        if len(self.aldea1) > 0:
+            self.name = self.aldea1.name
+            return {
+                'domain': {
+                    'aldea2': [('id', '!=', self.aldea1.id)],
+                }
+            } 
+
+    @api.onchange('aldea2')
+    def onchange_aldea2(self):
+        print(self)
+        if len(self.aldea2) > 0:
+            self.name = self.aldea2.name
+            return {
+                'domain': {
+                    'aldea1': [('id', '!=', self.aldea2.id)],
+                }
+            }
+    def launch_battle(self):
+        print("launch")
+
+    def execute_battle(self):
+        print("execute")
+
+    def back(self):
+        print("back")
+                
+    def simulate_battle(self):
+        print("simulate")        
+
+class battle_dioses_rel(models.Model):
+    _name = 'godslayer.battle_dioses_rel'
+    _description = 'battle_dioses_rel'
+
+    name = fields.Char(related="dioses_id.name")
+    dioses_id = fields.Many2one('godslayer.dioses')
+    battle_id = fields.Many2one('godslayer.battle')
+    qty = fields.Integer()
 

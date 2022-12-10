@@ -48,6 +48,7 @@
                             <field name="password" password="True"/>
                             <field name="creation_date"/>
                             <field name="mundo"/>
+                            <field name="location"/>
                         </group>
                         <notebook>
 
@@ -104,6 +105,12 @@
                                             </templates>
                                     </kanban>
                                     </field>
+                                </group>
+                            </page>
+
+                            <page string="Dioses">
+                                <group>
+                                    <field name="dioses_disponibles"/>
                                 </group>
                             </page>
 
