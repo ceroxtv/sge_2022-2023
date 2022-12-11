@@ -53,6 +53,7 @@ class aldea(models.Model):
     templos_disponible = fields.Many2many('godslayer.templo_type',compute="get_avaliable_temples")
     dioses_disponibles = fields.Many2many('godslayer.dioses',compute="get_avaliable_dioses")
     edificio = fields.One2many('godslayer.edificio', 'aldea')
+    edificios = fields.Many2many('godslayer.edificio',compute="get_edificios")
 
     creation_date = fields.Datetime(default = fields.Datetime.now)
 
@@ -93,6 +94,10 @@ class aldea(models.Model):
         if(len(self) > 0 and len(other_aldea) > 0):
             distance = abs(self.location - other_aldea.location)
             return distance
+    
+    def get_edificios(self):
+         for c in self:
+             c.edificios = self.env['godslayer.edificio'].search([('aldea', '=', c.id)])
 
 
 class religion(models.Model):
@@ -168,8 +173,10 @@ class edificio(models.Model):
 
     edificio_type = fields.Many2one('godslayer.edificio_type', ondelete = "restrict")
     name = fields.Char(related='edificio_type.name')
+    level = fields.Integer(default=1)
     coste_oro = fields.Float(String="Precio", related='edificio_type.coste_oro')
     coste_material = fields.Float(String="Cantidad Material", related='edificio_type.coste_material')
+    required_gold_levelup = fields.Float(compute='_get_required_gold_levelup')
     imagen = fields.Image(max_width=150, max_height=150, related='edificio_type.imagen')
 
     production_oro = fields.Float(compute='_get_productions')
@@ -180,19 +187,55 @@ class edificio(models.Model):
     
     def _get_productions(self):
      for b in self:
-            production_oro = b.edificio_type.production_oro
-            production_fe = b.edificio_type.production_fe
-            production_material = b.edificio_type.production_material
-           
+        b.production_oro = 0
+        b.production_fe = 0
+        b.production_material = 0
+        level = b.level
 
-            if production_oro + b.aldea.oro >= 0 and production_fe + b.aldea.fe >= 0 and production_material + b.aldea.materiales >= 0:
-                b.production_oro = production_oro
-                b.production_fe = production_fe
-                b.production_material = production_material             
+        oro_production = b.edificio_type.production_oro * level
+        fe_production = b.edificio_type.production_fe * level
+        material_production = b.edificio_type.production_material * level
+
+        if oro_production + b.aldea.oro >= 0 and fe_production + b.aldea.fe >= 0 and material_production + b.aldea.materiales >= 0:
+            b.production_oro = oro_production
+            b.production_fe = fe_production
+            b.production_material = material_production      
+    
+        else:
+            b.production_oro = 0
+            b.production_fe = 0
+            b.production_material = 0 
+                
+    '''            
+    def update_level(self):
+        for b in self:
+            if b.aldea.gold >= (b.coste_oro ** b.level):
+                b.level += 1
+                b.aldea.gold -= (b.coste_oro ** b.level)
             else:
-                b.production_oro =0
-                b.production_fe =0
-                b.production_material =0     
+                return {
+                    'type': 'ir.actions.client',
+                    'tag': 'display_notification',
+                    'params': {
+                        'message': 'You need '+str(b.coste_oro ** b.level)+' gold',
+                        'type': 'danger',  # types: success,warning,danger,info
+                        'sticky': False
+                    }
+                } 
+    '''
+    def _get_required_gold_levelup(self):
+        for c in self:
+            c.required_gold_levelup = 4 ** c.level
+
+    def levelupgrade_building(self):
+        for c in self:
+            required_gold = c.required_gold_levelup  # Smartbutton
+            available_gold = c.aldea.oro
+            if (required_gold <= available_gold):
+                c.level += 1
+                c.aldea.oro = c.aldea.oro - required_gold
+            else:
+                raise ValidationError("You don't have enough gold")                 
 
 class edificio_type(models.Model):
     _name = 'godslayer.edificio_type'
