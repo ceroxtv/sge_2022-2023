@@ -165,6 +165,8 @@ class templo_type(models.Model):
                 aldea.oro -= c.coste_oro
                 aldea.fe -= c.coste_fe
                 aldea.materiales -= c.coste_material
+            else:
+                raise ValidationError("You don't have enough resources")
 
 
 class edificio(models.Model):
