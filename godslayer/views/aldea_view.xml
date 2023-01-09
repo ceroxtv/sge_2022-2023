@@ -3,7 +3,7 @@
         <!--ALDEA -->
         <record model="ir.ui.view" id="godslayer.aldea_tree">
             <field name="name">godslayer aldea</field>
-            <field name="model">godslayer.aldea</field>
+            <field name="model">res.partner</field>
             <field name="arch" type="xml">
                 <tree>
                     <field name="avatar_tumb" widget="image"/>
@@ -15,9 +15,11 @@
 
         <record model="ir.ui.view" id="godslayer.aldea_search">
             <field name="name">godslayer aldea</field>
-            <field name="model">godslayer.aldea</field>
+            <field name="model">res.partner</field>
+            <field name="priority" eval="17"/>
             <field name="arch" type="xml">
                 <search>
+                    <filter name="aldea_partner" string="isPlayer" domain="[('is_player','=',True)]"/>
                     <field name="name"/>
                     <field name="oro"/>
                     <field name="fe"/>
@@ -38,7 +40,7 @@
 
         <record model="ir.ui.view" id="godslayer.aldea_form">
             <field name="name">godslayer aldea</field>
-            <field name="model">godslayer.aldea</field>
+            <field name="model">res.partner</field>
             <field name="arch" type="xml">
                 <form>
                     <sheet>
@@ -161,9 +163,139 @@
             </field>
         </record>
 
+        <record model="ir.ui.view" id="godslayer.aldea_partner_form">
+            <field name="name">godslayer aldea</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <notebook position="inside">
+                    <page string="Godslayer">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="avatar" widget="image"/>
+                            <field name="name"/>
+                            <field name="password" password="True"/>
+                            <field name="creation_date"/>
+                            <field name="mundo"/>
+                            <field name="location"/>
+                        </group>
+                        <notebook>
+
+                            <page string = "Recursos">
+                                <group>
+                                    <field name = "oro" />
+                                    <field name = "fe" />
+                                    <field name = "materiales"/>
+                                </group>
+                            </page>
+
+                            <page string="Religion">
+                                <group>
+                                    <field name="religion"/>
+                                </group>
+                            </page>
+
+                            <page string="Templo">
+                                <group>
+                                    <field name="templos"/>
+                                </group>
+                                <group>
+                                    <field name="templos_disponible" string="Templos Crear" mode="kanban">
+                                    <kanban>
+                                        <field name="id"/>
+                                        <field name="name"/>
+                                        <field name="imagen"/>
+                                        <field name="religion"/>
+
+                                        <templates>
+                                                <t t-name="kanban-box">
+                                                    <div t-attf-class="oe_kanban_card o_kanban_record_has_image_fill ">
+                                                        <div class="o_kanban_image_fill_left o_kanban_image_full d-none d-md-block"
+                                                             t-attf-style="background-image:url('#{kanban_image('godslayer.templo_type',
+                                                                            'imagen', record.id.value, placeholder)}')">
+                                                        </div>
+                                                        <div class="oe_kanban_details d-flex flex-column">
+                                                            <a type="open">
+                                                                <h4 class="o_kanban_record_title oe_partner_heading"><field name="name"/></h4></a>
+                                                            <ul>
+                                                                <li>Religion: <field name="religion"/></li>
+                                                                <li>Dios: <field name="religion"/></li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="oe_kanban_details d-flex flex-column">
+                                                            <button name="create_temple"
+                                                                    type="object"
+                                                                    string="Fabricate"
+                                                                    class="btn btn-primary"
+                                                                    context="{'ctx_aldea':parent.id}">Create</button>
+                                                        </div>
+                                                    </div>
+                                                </t>
+                                            </templates>
+                                    </kanban>
+                                    </field>
+                                </group>
+                            </page>
+
+                            <page string="Dioses">
+                                <group>
+                                    <field name="dioses_disponibles"/>
+                                </group>
+                            </page>
+
+                            <page string="Edificios">
+                                <group>
+                                    <field name="edificio"/>
+                                </group>
+                                <group>
+                                    <field name="edificios" string="Upgradear Edificios" mode="kanban">
+                                    <kanban>
+                                        <field name="id"/>
+                                        <field name="name"/>
+                                        <field name="imagen"/>
+                                        <field name="level"/>
+
+                                        <templates>
+                                                <t t-name="kanban-box">
+                                                    <div t-attf-class="oe_kanban_card o_kanban_record_has_image_fill ">
+                                                        <div class="o_kanban_image_fill_left o_kanban_image_full d-none d-md-block"
+                                                             t-attf-style="background-image:url('#{kanban_image('godslayer.edificio',
+                                                                            'imagen', record.id.value, placeholder)}')">
+                                                        </div>
+                                                        <div class="oe_kanban_details d-flex flex-column">
+                                                            <a type="open">
+                                                                <h4 class="o_kanban_record_title oe_partner_heading"><field name="name"/></h4></a>
+                                                            <ul>
+                                                                <li>Nombre: <field name="name"/></li>
+                                                                <li>Nivel: <field name="level"/></li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="oe_kanban_details d-flex flex-column">
+                                                            <button name="levelupgrade_building"
+                                                                    type="object"
+                                                                    string="Fabricate"
+                                                                    class="btn btn-primary"
+                                                                    context="{'ctx_aldea':parent.id}">Upgrade</button>
+                                                        </div>
+                                                    </div>
+                                                </t>
+                                            </templates>
+                                    </kanban>
+                                    </field>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+
         <record model="ir.ui.view" id="godslayer.aldea_kanban">
             <field name="name">godslayer aldea kanban</field>
-            <field name="model">godslayer.aldea</field>
+            <field name="model">res.partner</field>
             <field name="arch" type="xml">
                 <kanban>
                     <field name="id"/>
@@ -177,8 +309,8 @@
                         <t t-name="kanban-box">
                             <div t-attf-class="oe_kanban_card o_kanban_record_has_image_fill ">
                                 <div class="o_kanban_image_fill_left o_kanban_image_full d-none d-md-block"
-                                     t-attf-style="background-image:url('#{kanban_image('godslayer.aldea',
-                                                   'avatar', record.id.value, placeholder)}')">
+                                     t-attf-style="background-image:url('#{kanban_image('res.partner',
+                                                   'avatar_tumb', record.id.value, placeholder)}')">
                                 </div>
 
                                 <div class="oe_kanban_details d-flex flex-column">

@@ -10,8 +10,14 @@
 
     <record model="ir.actions.act_window" id="godslayer.action_aldea_window">
       <field name="name">godslayer aldeas window</field>
-      <field name="res_model">godslayer.aldea</field>
+      <field name="res_model">res.partner</field>
       <field name="view_mode">kanban,tree,form</field>
+      <field name="domain"/>
+      <field name="search_view_id" ref = "godslayer.aldea_search"/>
+      <field name="context">{'default_is_player': True, 'search_default_aldea_partner': 1}</field>
+      <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('godslayer.aldea_tree')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('godslayer.aldea_form')}),]" />
     </record>
 
     <record model="ir.actions.act_window" id="godslayer.action_religion_window">

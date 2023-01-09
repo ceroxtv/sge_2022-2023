@@ -2,7 +2,7 @@
 <data>
 <record model="ir.cron" forcecreate="True" id="godslayer.cron_produce">
             <field name="name">godslayer: Cron Update</field>
-            <field name="model_id" ref="model_godslayer_aldea"/>
+            <field name="model_id" ref="base.model_res_partner"/>
             <field name="state">code</field>
             <field name="code">model.produce()</field>
             <field name="user_id" ref="base.user_root"/>

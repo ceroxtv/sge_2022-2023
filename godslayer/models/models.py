@@ -13,7 +13,7 @@ class mundo(models.Model):
     image = fields.Image(max_width=200, max_height=200)
     size = fields.Float()
 
-    aldea = fields.One2many('godslayer.aldea','mundo')
+    aldea = fields.One2many('res.partner','mundo')
     aldea_qty = fields.Integer(compute="get_aldeas_qty")
 
     @api.constrains('size')
@@ -30,14 +30,16 @@ class mundo(models.Model):
 
 
 class aldea(models.Model):
-    _name = 'godslayer.aldea'
+    _name = 'res.partner'
     _description = 'aldea'
+    _inherit = 'res.partner'
 
-    name = fields.Char(String="Nombre", required = True)
+    #name = fields.Char(String="Nombre", required = True)
     avatar = fields.Image(max_width=200, max_height=200)
     avatar_tumb = fields.Image(related="avatar", max_width=50, max_height=50)
     password = fields.Char(String="Contrsenya")
     location = fields.Integer(default=random.randint(1,9999))
+    is_player = fields.Boolean(default=False)
 
     oro = fields.Float(default=50)
     fe = fields.Float(default=50)
@@ -106,7 +108,7 @@ class religion(models.Model):
 
     name = fields.Char(String="Nombre", required=True)
 
-    aldea = fields.One2many('godslayer.aldea','religion')
+    aldea = fields.One2many('res.partner','religion')
     templo_type = fields.Many2one('godslayer.templo_type')
     dioses = fields.One2many('godslayer.dioses','religion')
     dioses_qty = fields.Integer(String="Cantidad Dioses",compute="get_dioses_qty")
@@ -128,7 +130,7 @@ class templo(models.Model):
     coste_fe = fields.Float(String="Cantidad Fe", related='templo_type.coste_fe')
     imagen = fields.Image(max_width=150, max_height=150, related='templo_type.imagen')
 
-    aldea = fields.Many2one('godslayer.aldea')
+    aldea = fields.Many2one('res.partner')
     dioses = fields.Many2one('godslayer.dioses')
     religion = fields.Many2one('godslayer.religion', related='templo_type.religion')
     dioses_qty = fields.Integer(compute="get_dioses_qty")
@@ -153,7 +155,7 @@ class templo_type(models.Model):
 
     def create_temple(self):
         for c in self:
-            aldea = self.env['godslayer.aldea'].browse(self.env.context['ctx_aldea'])[0]
+            aldea = self.env['res.partner'].browse(self.env.context['ctx_aldea'])[0]
             dios = self.env['godslayer.dioses'].search([('religion', '=', c.religion.id)])
             d = random.choice(dios)
             if aldea.oro >= c.coste_oro and aldea.fe >= c.coste_fe and aldea.materiales >= c.coste_material:
@@ -185,7 +187,7 @@ class edificio(models.Model):
     production_fe=fields.Float(compute='_get_productions')
     production_material = fields.Float(compute='_get_productions')
 
-    aldea = fields.Many2one('godslayer.aldea')
+    aldea = fields.Many2one('res.partner')
     
     def _get_productions(self):
      for b in self:
@@ -288,8 +290,8 @@ class battle(models.Model): #falta terminar
     distance = fields.Float(compute='_get_time')
     progress = fields.Float()
     state = fields.Selection([('1', 'Preparation'), ('2', 'Send'), ('3', 'Finished')], default='1')
-    aldea1 = fields.Many2one('godslayer.aldea')
-    aldea2 = fields.Many2one('godslayer.aldea')
+    aldea1 = fields.Many2one('res.partner')
+    aldea2 = fields.Many2one('res.partner')
     dioses_list = fields.One2many('godslayer.battle_dioses_rel', 'battle_id')
     
     @api.depends('dioses_list', 'aldea1', 'aldea2')
