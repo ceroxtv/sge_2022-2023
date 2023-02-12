@@ -239,7 +239,27 @@ class edificio(models.Model):
                 c.level += 1
                 c.aldea.oro = c.aldea.oro - required_gold
             else:
-                raise ValidationError("You don't have enough gold")                 
+                raise ValidationError("You don't have enough gold")
+            
+            
+class edificio_wizard(models.TransientModel):
+    _name='godslayer.edificio_wizard'
+    _description='Wizard crea edificios'
+    
+    def get_default_aldea(self):
+        return self.env['res.partner'].browse(self._context.get('active_id'))
+    
+    aldea = fields.Many2one('res.partner', default=get_default_aldea, required=True)
+    edificio_type = fields.Many2one('godslayer.edificio_type')
+    
+    def create_edificio_wizard(self):
+        self.ensure_one()
+        if(self.aldea.oro > self.edificio_type.coste_oro and self.aldea.materiales > self.edificio_type.coste_material):
+            self.env[godslayer.edificio].create({
+                "aldea":self.aldea.id,
+                "edifcio_type":self.building_type.id
+            })
+                 
 
 class edificio_type(models.Model):
     _name = 'godslayer.edificio_type'

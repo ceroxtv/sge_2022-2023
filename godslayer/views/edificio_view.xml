@@ -1,5 +1,23 @@
 <odoo>
     <data>
+       <record model="ir.ui.view" id="godslayer.edificio_wizard_view">
+            <field name="name">godslayer.edificio.wizard</field>
+            <field name="model">godslayer.edificio_wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                <group>
+                    <field name="aldea"/>
+                    <field name="edificio_type"/>
+                </group>
+
+                <footer>
+                    <button name="create_edificio_wizard" type="object" string="Create" class="oe_highlight"/>
+                    <button special="cancel" string="Cancel"/>
+                </footer>
+                
+                </form>
+            </field>
+        </record>
         <!-- EDIFICIO -->
         <record model="ir.ui.view" id="godslayer.edificio_tree">
             <field name="name">godslayer edificio</field>
@@ -42,6 +60,13 @@
                 </form>
             </field>
         </record>
-
+        
+        <record id="godslayer.edificio_wizard_action" model="ir.actions.act_window">
+        <field name="name">Crear Edificio</field>
+        <field name="res_model">godslayer.edificio_wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        </record>
+        
     </data>
 </odoo>

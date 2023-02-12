@@ -59,6 +59,7 @@
                                     <field name = "oro" />
                                     <field name = "fe" />
                                     <field name = "materiales"/>
+                                    <button name="%(godslayer.edificio_wizard_action)d" type="action" string="Create Building" class="oe_highlight"/>
                                 </group>
                             </page>
 

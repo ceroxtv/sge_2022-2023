@@ -8,3 +8,4 @@ access_godslayer_edificio_type,godslayer.edificio_type,model_godslayer_edificio_
 access_godslayer_dioses,godslayer.dioses,model_godslayer_dioses,base.group_user,1,1,1,1
 access_godslayer_battle,godslayer.battle,model_godslayer_battle,base.group_user,1,1,1,1
 access_godslayer_battle_dioses_rel,godslayer.battle_dioses_rel,model_godslayer_battle_dioses_rel,base.group_user,1,1,1,1
+access_godslayer_edificio_wizard,godslayer.edificio_wizard,model_godslayer_edificio_wizard,base.group_user,1,1,1,1
