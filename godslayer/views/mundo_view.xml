@@ -31,6 +31,7 @@
 
             <group>
               <field name="aldea"/>
+              <button name="%(godslayer.aldea_wizard_action)d" type="action" string="Create Aldea" class="oe_highlight"/>
             </group>
           </sheet>
         </form>

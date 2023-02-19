@@ -1,5 +1,59 @@
 <odoo>
     <data>
+
+        <!-- WIZARD ALDEA-->
+        <record model="ir.ui.view" id="godslayer.aldea_wizard_view">
+            <field name="name">godslayer.aldea.wizard</field>
+            <field name="model">godslayer.aldea_wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                <header>
+                    <button name="back" type="object" string="Atras" class="btn btn-secondary" states="2,3,4"/>
+                    <button name="next" type="object" string="Adelante" class="btn oe_highlight" states="1,2,3"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group states="1,2,3,4">
+                        <field name="name" attrs="{'readonly':[('state','!=','1')]}"/>
+                        <field name="password" attrs="{'readonly':[('state','!=','1')]}"/>
+                        <field name="mundo" attrs="{'readonly':[('state','!=','1')]}"/>
+                    </group>
+
+                    <group states="2">
+
+                        <group col="3" >
+                            <field name="a_type"/>
+                            <button name='add_edificio' type="object" string="Create Edificio" class="oe_highlight"/>
+                        </group>
+
+                        <group>
+                            <field name="edificios"/>
+                        </group>
+
+                    </group>
+
+                    <group states="3">
+                        <field name="religion"/>
+                        <field name="avatar"/>
+                    </group>
+
+                </sheet>
+                <footer>
+                    <button name="create_aldea_wizard" type="object" string="Create" class="oe_highlight" states = "4"/>
+                    <button special="cancel" string="Cancel"/>
+                </footer>
+                
+                </form>
+            </field>
+        </record>
+
+        <record id="godslayer.aldea_wizard_action" model="ir.actions.act_window">
+        <field name="name">Crear Aldea</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">godslayer.aldea_wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        </record>
         <!--ALDEA -->
         <record model="ir.ui.view" id="godslayer.aldea_tree">
             <field name="name">godslayer aldea</field>

@@ -11,6 +11,7 @@
                     <field name="date_start"/>
                     <field name="date_end"/>
                     <field name="distance"/>
+                    <field name="winner"/>
                 </tree>
             </field>
         </record>
@@ -21,7 +22,7 @@
             <field name="arch" type="xml">
                 <form>
                     <header>
-                        <button name="launch_battle"
+                        <button name="prepare_battle"
                               type="object"
                               string="Launch Battle"
                               class="btn btn-primary">
@@ -31,7 +32,7 @@
                               string="Back"
                               class="btn btn-primary">
                         </button>
-                        <button name="simulate_battle"
+                        <button name="launch_battle"
                               type="object"
                               string="Simulation"
                               class="btn btn-primary">
@@ -49,6 +50,11 @@
                             <field name="date_start"/>
                             <field name="date_end"/>
                         </group>
+
+                        <group>
+                            <field name="winner"/>
+                        </group>
+
                     </sheet>
                 </form>
             </field>    

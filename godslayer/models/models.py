@@ -102,6 +102,93 @@ class aldea(models.Model):
              c.edificios = self.env['godslayer.edificio'].search([('aldea', '=', c.id)])
 
 
+
+class aldea_wizard(models.TransientModel):
+    _name = 'godslayer.aldea_wizard'
+    _description = 'wizard aldea'
+    
+    name = fields.Char()
+    password = fields.Char()
+    religion = fields.Many2one('godslayer.religion', string='Religion')
+    avatar = fields.Image(max_width=200, max_height=200)
+    
+    edificios = fields.Many2many('godslayer.edificio')
+    a_type = fields.Many2one('godslayer.edificio_type', string='Tipo de edificio')
+    state = fields.Selection([('1','Aldea'),('2','Edificios'),('3','Religion'),('4','Create')],default='1')
+    
+    @api.model
+    def aldea_wizard_action(self):
+        action= self.env.ref('godslayer.aldea_wizard_action').read()[0]
+        return action
+        
+    
+    def get_default_mundo(self):
+        return self.env['godslayer.mundo'].browse(self._context.get('active_id'))
+    
+    mundo = fields.Many2one('godslayer.mundo',default=get_default_mundo,required=True)
+
+    def add_edificio(self):
+        for c in self:
+            c.write({'edificios':[(0,0,{'edificio_type':c.a_type.id})]})
+        return {
+            'type':'ir.actions.act_window',
+            'res_model':self._name,
+            'res_id':self.id,
+            'view_mode':'form',
+            'target':'new', 
+        }
+        
+    def next(self):
+        if self.state == '1':
+            self.state = '2'
+        elif self.state == '2':
+            self.state = '3'
+        elif self.state == '3':
+            self.state = '4'
+            
+        return {
+            'type':'ir.actions.act_window',
+            'res_model':self._name,
+            'res_id':self.id,
+            'view_mode':'form',
+            'target':'new', 
+        }
+
+    def back(self):
+        if self.state == '2':
+            self.state = '1'
+        elif self.state == '3':
+            self.state = '2'
+        elif self.state == '4':
+            self.state = '3'
+            
+        return {
+            'type':'ir.actions.act_window',
+            'res_model':self._name,
+            'res_id':self.id,
+            'view_mode':'form',
+            'target':'new', 
+        }
+
+    def create_aldea_wizard(self):
+        for c in self:
+            edificis=[]
+            for e in c.edificios:
+                tipo = c.a_type.id
+                edi = c.env['godslayer.edificio'].create({'edificio_type':tipo})
+                edificis.append(edi.id)
+            
+            alde = c.env['res.partner'].create({'name':c.name,'password':c.password,'religion':c.religion.id,'avatar':c.avatar,'mundo':c.mundo.id,'is_player':True,'edificios':[(6,0,edificis)]})
+        
+        return {
+            'type':'ir.actions.act_window',
+            'res_model':'res.partner',
+            'res_id':alde.id,
+            'view_mode':'form',
+            'target':'current',
+        }
+    
+    
 class religion(models.Model):
     _name = 'godslayer.religion'
     _description = 'religion'
@@ -254,11 +341,14 @@ class edificio_wizard(models.TransientModel):
     
     def create_edificio_wizard(self):
         self.ensure_one()
-        if(self.aldea.oro > self.edificio_type.coste_oro and self.aldea.materiales > self.edificio_type.coste_material):
-            self.env[godslayer.edificio].create({
+        if self.aldea.oro >= self.edificio_type.coste_oro and self.aldea.materiales >= self.edificio_type.coste_material:
+            print("Holaaaa")
+            self.env['godslayer.edificio'].create({
                 "aldea":self.aldea.id,
-                "edifcio_type":self.building_type.id
+                "edificio_type":self.edificio_type.id
             })
+            self.aldea.oro -= 50
+            self.aldea.materiales -= 50
                  
 
 class edificio_type(models.Model):
@@ -313,6 +403,19 @@ class battle(models.Model): #falta terminar
     aldea1 = fields.Many2one('res.partner')
     aldea2 = fields.Many2one('res.partner')
     dioses_list = fields.One2many('godslayer.battle_dioses_rel', 'battle_id')
+    qty_creatures1 = fields.Integer(compute='_get_creatures_1')
+    qty_creatures2 = fields.Integer(compute='_get_creatures_2')
+    winner = fields.Many2one('res.partner')
+    draft = fields.Boolean()
+
+    def _get_creatures_1(self):
+        for b in self:
+            b.qty_creatures1 += b.aldea1.dioses_disponibles.total
+
+    def _get_creatures_2(self):
+        for b in self:
+            b.qty_creatures2 += b.aldea2.dioses_disponibles.total
+
     
     @api.depends('dioses_list', 'aldea1', 'aldea2')
     def _get_time(self):
@@ -350,14 +453,41 @@ class battle(models.Model): #falta terminar
                     'aldea1': [('id', '!=', self.aldea2.id)],
                 }
             }
+            
+    def prepare_battle(self):
+        for b in self:
+            print(b.qty_creatures1)
+
+            if len(b.aldea1) == 1 and len(b.aldea2) == 1 and b.state == '1':
+                b.date_start = fields.Datetime.now()
+                b.progress = 50
+                b.state = '2'
+    
     def launch_battle(self):
-        print("launch")
+        for b in self:
+            result = b.execute_battle()
 
     def execute_battle(self):
-        print("execute")
-
+        b = self
+        print(b.qty_creatures1)
+        print(b.qty_creatures2)
+        if b.qty_creatures1 > b.qty_creatures2:
+            b.winner = b.aldea1.id
+        else:
+            b.winner = b.aldea2.id
+                
+        b.state = '3'
+        b.progress = 100    
+            
     def back(self):
-        print("back")
+        for b in self:
+            if b.state == '2':
+                b.state = '1'
+                b.progress = 0
+
+            if b.state == '3':
+                b.state = '2'
+                b.progress = 50
                 
     def simulate_battle(self):
         print("simulate")        
